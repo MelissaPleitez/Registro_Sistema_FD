@@ -5,9 +5,8 @@ const ButtonReport = () => {
   const handleDownloadReport = async () => {
     try {
       const response = await getReport();
-      console.log("report: ", response.data);
 
-      const url = window.URL.createObjectURL(new Blob([response.data])); // Crea un objeto URL con los datos blob
+      const url = window.URL.createObjectURL(new Blob([response.data])); 
       const a = document.createElement("a");
       a.href = url;
       a.download = "client_report.csv";

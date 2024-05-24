@@ -28,7 +28,6 @@ function LoginForm() {
     e.preventDefault()
     try {
         const response = await handleLoginRequest(email, password)
-        console.log("esto trae:", response.status.token)
         if(response){
             localStorage.setItem("token", response.status.token);
             login()

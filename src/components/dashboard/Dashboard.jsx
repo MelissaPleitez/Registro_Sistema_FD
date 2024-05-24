@@ -43,10 +43,8 @@ function Dashboard() {
   const handleDeleteClient = async (id) => {
     try {
       await deleteClientData(id);
-      console.log("este es el id que se esta eliminando :", id)
       await deleteClients(id);
       setClients(clients.filter((client) => client.id !== id));
-      console.log("Client deleted successfully");
       
     } catch (error) {
       console.error("Error deleting client:", error);
@@ -71,8 +69,6 @@ function Dashboard() {
     }
   };
 
-  
-  console.log("Aver: ", clients)
   const handleEditClient = (clientData) => {
     navigate(`/Editar/${clientData.id}`);
   };

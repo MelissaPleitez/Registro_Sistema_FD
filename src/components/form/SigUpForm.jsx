@@ -37,7 +37,6 @@ function SigUpForm(){
         e.preventDefault()
         try {
             const response = await handleRegistrationRequest(email, password)
-            console.log("esto trae 1:", response.data.token)
             if(response){
                 localStorage.setItem("token", response.data.token);
                 login()

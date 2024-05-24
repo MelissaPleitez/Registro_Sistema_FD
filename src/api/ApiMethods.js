@@ -100,8 +100,14 @@ export const deleteClients = async (clientId) => {
 
 export const getClientById = async (clientId) => {
   try {
-    const response = await axios.get(`${API_ENDPOINT_GET_CLIENTS}/${clientId}`);
-    return response.data;
+    const response = await axios.get(`${API_ENDPOINT_GET_CLIENTS}/${clientId}`, 
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+    );
+    return response;
   } catch (error) {
     console.error("Error fetching client by ID:", error);
     throw error;

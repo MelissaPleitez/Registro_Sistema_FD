@@ -9,7 +9,6 @@ function AuditLogs () {
         async function fetchAudits() {
           try {
             const response = await getAuditLogs();
-            console.log("log: ", response.data)
             setAuditLogs(response.data);
           } catch (error) {
             console.error("Error fetching logs:", error);

@@ -10,10 +10,6 @@ import { Route, Routes, BrowserRouter } from "react-router-dom";
 import ProtectedRoute from "./protected/ProtectedRoute";
 
 function App() {
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-  };
-
   return (
     <BrowserRouter>
       <Routes>
