@@ -165,9 +165,9 @@ export const getCustomerIdentification = async (customerId) => {
   }
 };
 
-export const updateCustomerIdentification = async (customerId, identificationId) => {
+export const updateCustomerIdentification = async (customerId, identificationId, updatedIdentificationData) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/customers/${customerId}/customer_identifications/${identificationId}`, {
+    const response = await axios.put(`${API_BASE_URL}/customers/${customerId}/customer_identifications/${identificationId}`, updatedIdentificationData, {
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
     return response;
@@ -214,9 +214,9 @@ export const getCustomerDirection = async (customerId) => {
   }
 };
 
-export const updateCustomerDirection = async (customerId, directionId) => {
+export const updateCustomerDirection = async (customerId, directionId, updatedDirectionData) => {
   try {
-    const response = await axios.put(`${API_BASE_URL}/customers/${customerId}/customer_identifications/${directionId}`, {
+    const response = await axios.put(`${API_BASE_URL}/customers/${customerId}/customer_directions/${directionId}`, updatedDirectionData, {
       headers: { Authorization: "Bearer " + localStorage.getItem("token") },
     });
     return response;

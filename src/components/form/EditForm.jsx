@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { updateClient, getClientById, updateCustomerDirection, updateCustomerIdentification } from "../../api/ApiMethods";
+import { updateClient, getClientById, getCustomerIdentification, getCustomerDirection, updateCustomerDirection, updateCustomerIdentification, createCustomerDirection, createCustomerIdentification } from "../../api/ApiMethods";
 import { useNavigate, useParams } from "react-router-dom";
 
 function EditForm() {
@@ -18,13 +18,15 @@ function EditForm() {
     const fetchClient = async () => {
       try {
         const client = await getClientById(clientId);
+        const client_direction = await getCustomerDirection(clientId);
+        const client_identification = await getCustomerIdentification(clientId);
         setFormData({
-          firstname: client.first_name || "",
-          lastname: client.last_name || "",
-          clientEmail: client.client_email || "",
-          telNumber: client.tel_number || "",
-          directions: client.directions || [],
-          identifications: client.identifications || [],
+          firstname: client.data.first_name || "",
+          lastname: client.data.last_name || "",
+          clientEmail: client.data.client_email || "",
+          telNumber: client.data.tel_number || "",
+          directions: client_direction.data || [],
+          identifications: client_identification.data || [],
         });
       } catch (error) {
         console.error("Error fetching client:", error);
@@ -37,14 +39,20 @@ function EditForm() {
   const handleAddDirection = () => {
     setFormData({
       ...formData,
-      directions: [...formData.directions, { address: "", city: "", state: "", postal_code: "" }],
+      directions: [
+        ...formData.directions,
+        { address: "", city: "", state: "", postal_code: "" }
+      ],
     });
   };
 
   const handleAddIdentification = () => {
     setFormData({
       ...formData,
-      identifications: [...formData.identifications, { identification_type: "", identification_number: "", expiration_date: "" }],
+      identifications: [
+        ...formData.identifications,
+        { identification_type: "", identification_number: "", expiration_date: "" }
+      ],
     });
   };
   
@@ -81,6 +89,8 @@ function EditForm() {
           const directionId = direction.id; 
           if (directionId) {
             await updateCustomerDirection(clientId, directionId, direction);
+          }else {
+            await createCustomerDirection(clientId, direction);
           }
         })
       );
@@ -90,6 +100,8 @@ function EditForm() {
           const identificationId = identification.id; 
           if (identificationId) {
             await updateCustomerIdentification(clientId, identificationId, identification);
+          }else {
+            await createCustomerIdentification(clientId, identification);
           }
         })
       );
@@ -147,8 +159,8 @@ function EditForm() {
               />
             </div>
           
-            {formData.directions.map((direction, index) => (
-              <div key={index} className="mb-3">
+            {formData && formData.directions.map((direction, index) => (
+              <div key={index} className="mb-3 mt-3">
                 <input
                   type="text"
                   className="form-control"
@@ -156,7 +168,28 @@ function EditForm() {
                   value={direction.address || ""}
                   onChange={(e) => handleDirectionChange(index, "address", e.target.value)}
                 />
-               
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Ciudad"
+                  value={direction.city || ""}
+                  onChange={(e) => handleDirectionChange(index, "city", e.target.value)}
+                />
+
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="codigo postal"
+                  value={direction.postal_code || ""}
+                  onChange={(e) => handleDirectionChange(index, "postal_code", e.target.value)}
+                />
+               <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Estado"
+                  value={direction.state || ""}
+                  onChange={(e) => handleDirectionChange(index, "state", e.target.value)}
+                />
               </div>
             ))}
    
@@ -164,8 +197,15 @@ function EditForm() {
               Agregar dirección
             </button>
             {/* Inputs para identificaciones */}
-            {formData.identifications.map((identification, index) => (
-              <div key={index} className="mb-3">
+            {formData && formData.identifications.map((identification, index) => (
+              <div key={index} className="mb-3 mt-3">
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Numero de identificación"
+                  value={identification.identification_number || ""}
+                  onChange={(e) => handleIdentificationChange(index, "identification_number", e.target.value)}
+                />
                 <input
                   type="text"
                   className="form-control"
